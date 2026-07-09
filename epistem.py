@@ -268,7 +268,7 @@ def stress(
 # ─────────────────────────── isomorphism ─────────────────────────────────
 
 def isomorphism(v_a: np.ndarray, v_b: np.ndarray) -> Tuple[float, float]:
-    """Pearson r and p-value between two consensus profiles."""
+    """Pearson r and p-value between two profiles. Safeguarded against constant inputs."""
     if np.std(v_a) < 1e-9 or np.std(v_b) < 1e-9:
         return 0.0, 1.0
     r, p = pearsonr(v_a, v_b)
