@@ -1,0 +1,347 @@
+﻿Mathematical and Algorithmic Specification of the Epistem Engine
+Epistemic Framework of the Consensus Manifold
+The epistem engine is a computational framework designed to resolve conflicts and coordinate consensus across decentralized networks where no single node holds absolute epistemic authority, and where persistent disagreement is a structural property of the system.1 Rather than forcing negotiation into a cognitive monoculture through scalar optimization—which often discards minority positions in favor of a homogenized average—the engine models consensus over a high-dimensional coordinate system known as the consensus manifold.2 This framework draws upon Charles Sanders Peirce’s theory of inquiry, Wilfrid Sellars’ concept of the space of reasons, and active inference principles, viewing scientific and political agreement not as an objective, absolute truth-pointing mechanism, but as a rational consensus that survives systematic questioning within a community of inquiry.4
+To transition from qualitative documentation to structured mathematical coordination, unstructured textual requirements (e.g., narratives, policy drafts, or organizational mandates) are mapped onto continuous, low-dimensional coordinate profiles.3 This transformation is performed by a vectorization pipeline that applies sublinear Term Frequency-Inverse Document Frequency (TF-IDF) extraction followed by Truncated Singular Value Decomposition (SVD) and dimensional scaling.3 The sublinear TF-IDF weight for a term    in a document    within a corpus of size    is formulated as 3:
+  
+
+where    represents the term frequency and    is the document frequency of term   .3 The high-dimensional sparse representation    is subsequently projected onto the    most significant semantic axes 3:
+  
+
+To prevent coordinate scaling disparities from dominating downstream optimization routines, a Min-Max scaling transformation maps the projected coordinates onto a stable theoretical workspace defined by the interval   , where    and    3:
+  
+
+This projection constrains all candidate theories and proposed drafts to a standardized boundary, ensuring that coordinate-based comparisons and distance metrics remain mathematically consistent across the entire manifold.3
+Isomorphism and Structural Alignment
+The structural alignment, robustness, and trajectory tracking of the consensus manifold are governed by the isomorphism primitive.3 This function computes the Pearson correlation coefficient (  ) and its corresponding two-tailed   -value between two consensus profiles    and    over    dimensions 3:
+  
+
+The   -value evaluates the statistical significance of this correlation against the null hypothesis that the two profiles are linearly independent. Within the consensus system, the isomorphism primitive serves three diagnostic purposes.
+Subpopulation Robustness
+During large-scale multi-party negotiations, it is essential to verify whether an optimal consensus vector is invariant across different demographic, regional, or organizational subgroups. By partitioning the stakeholder matrix    into independent sub-matrices (e.g.,    and   ) and solving for their respective optimal consensus vectors (   and   ), the facilitator evaluates their alignment using the isomorphism score:
+  
+
+If the resulting correlation is high (  ) and statistically significant (  ), the consensus structure is geographically or demographically invariant. This confirms that the compromise is not an artifact of a specific subgroup's dominance but a stable feature of the entire negotiation landscape.
+Preference Drift Tracking
+In dynamic environments governed by reinforcement learning facilitators, stakeholder priorities and proposed drafts are subject to continuous modification.3 To track whether the negotiation process is smoothly converging to a stable equilibrium or oscillating unpredictably, the facilitator monitors the isomorphism score between consecutive time steps:
+  
+
+An    value approaching    over successive epochs indicates convergence and policy stabilization, while low or highly volatile correlation values signal structural instability, prompting the facilitating agent to reduce action step sizes or adjust the optimization constraints.
+Opposition Identification (Inverse Isomorphism)
+Polarization is identified when two profiles exhibit a perfect negative correlation (  ). If a proposed draft correlates negatively with a specific stakeholder group's target consensus, the facilitator can isolate the dimensions where the signs of the deviance terms    and    are strictly opposite. This mathematical diagnostic isolates the exact coordinates driving polarization, enabling targeted mediation on contentious issues rather than attempting to renegotiate the entire document.
+Unified Mathematical Specification Sheet
+The mathematical formulations detailed below serve as the engineering reference for the core modules implemented within the engine.
+
+
+Component / Phase
+	Mathematical Formulation
+	Code Reference
+	NLP Vectorization
+	  
+
+	TfidfVectorizer(...) 3
+	Dimensionality Reduction
+	  
+
+	TruncatedSVD(...) 3
+	Min-Max Scaling
+	  
+
+	embed(...) scaling step 3
+	Pearson Isomorphism
+	  
+
+	isomorphism(v_a, v_b) 3
+	Adversarial Worst-Case
+	  
+
+	q_worst(v) 3
+	Adversarial Best-Case
+	  
+
+	q_best(v) 3
+	Fragility Metric
+	  
+
+	fragility(v) 3
+	Consensus Objective
+	  
+
+	lp_consensus(...) objective 3
+	Maximin Linear Program
+	  
+ where   
+	linprog(..., method="highs") 3
+	Tension Metric
+	  
+ where   
+	ConsensusResult.tension 3
+	Stochastic Scenario Gen
+	  
+
+	scipy.stats.dirichlet inside stress 3
+	Draft Transition (MDP)
+	  
+
+	EpistemConsensusEnv.step 3
+	Stochastic Drift (MDP)
+	  
+
+	EpistemConsensusEnv.step 3
+	Consensus Quality Reward
+	  
+
+	EpistemConsensusEnv.step reward 3
+	Multi-Party Consensus Optimization
+The engine synthesizes a single, optimal consensus vector    from a library of    candidate theories (profiles)    to maximize the minimum satisfaction across    distinct stakeholders.3 Each stakeholder's priority profile is represented as a row in the normalized weight matrix   , where    for all   .3
+A naive formulation over the entire hypercube    suffers from structural degeneracy; the optimization would yield   , which mathematically maximizes the dot product for all non-negative weights but bears no relation to the actual candidate texts.3 To prevent this, the engine restricts the search space of    to the theory manifold, defined as the convex hull of the actual embedded theories 3:
+  
+
+where    belongs to the unit simplex    (   and   ).3 The consensus objective is modeled as a Maximin Linear Program designed to find the mixture weights    and a satisfaction floor    that maximize the worst-off stakeholder's score 3:
+  
+
+To solve this using standard linear programming solvers, the problem is recast into a minimization format over a decision vector    3:
+  
+
+  
+
+The inequality constraint matrix    and boundary vector    are defined as 3:
+  
+
+The equality constraint matrices enforce the simplex condition on the mixture weights 3:
+  
+
+Solving this linear program yields the optimal mixture weights   , the optimal consensus vector   , and the minimax satisfaction score   .3 To quantify the internal friction of this optimal state, the engine computes a tension metric representing the standard deviation of individual stakeholder scores 3:
+  
+
+where    is the consensus score for stakeholder   , and   .3 If the tension exceeds a predefined deadlock threshold (typically   ), a deadlock flag is raised, indicating that while the floor    has been maximized, the divergence between the highly satisfied and least satisfied parties remains unsustainably wide.3
+Adversarial Stress Testing and Robustness Analysis
+To evaluate the mathematical resilience of consensus profiles under uncertainty, the engine implements both exact analytical worst-case calculations and stochastic scenario testing.3
+Exact Global Bound Formulations
+The exact worst-case score (  ) and best-case score (  ) of a profile vector    over all possible normalized weight distributions in the simplex    are given by 3:
+  
+
+  
+
+This formulation exploits the mathematical properties of the simplex. Because any weight vector    represents a probability distribution, the dot product    is a convex combination of the coordinates of   . The absolute minimum of this combination is achieved when the entire weight mass is placed on the single smallest coordinate dimension of   , and the maximum is achieved when it is placed on the largest coordinate.3 This formulation reduces an infinite-dimensional constrained search to an    complexity operation, eliminating the need for iterative numerical optimization.3 The fragility of a profile is defined as the span of its performance across these boundaries 3:
+  
+
+A high fragility score indicates that a proposal is highly sensitive to stakeholder weight distributions, performing exceptionally well under favorable weights but collapsing under adversarial ones.
+Stochastic Dirichlet Scenario Generation
+While the exact boundaries represent the absolute worst-case limits, the engine also evaluates the statistical distribution of a profile's performance under non-uniform, volatile stakeholder priorities.3 This is accomplished by sampling adversarial weight vectors from a Dirichlet distribution, which generates random vectors over the simplex 3:
+  
+
+where    is the concentration parameter vector (typically symmetric, with    to favor highly polarized, sparse weight allocations).3 Under a stress-testing run with    scenarios, the engine constructs an adversarial weight matrix    by drawing Dirichlet samples and optionally appending the existing stakeholder matrix   .3 The joint performance matrix is computed via a single matrix multiplication:
+  
+
+where    is the matrix containing the theory vectors.3 For each theory   , the empirical worst score (  ) and mean score (  ) are computed and reported.3 Because the exact worst-case    is the global minimum over the entire simplex, it must act as a strict lower bound for any finite stochastic sample 3:
+  
+
+This relationship is verified continuously during system validation to ensure that high-frequency sampling has not bypassed the analytical worst-case boundaries.3
+Reinforcement Learning and Facilitation Dynamics
+To actively guide a multi-party negotiation toward a stable, low-tension, and robust compromise, the facilitation problem is modeled as a continuous-state, continuous-action Markov Decision Process (MDP).3 A reinforcement learning agent acts as the facilitator, iteratively adjusting the coordinates of a "working draft" vector based on the positions of the static candidate profiles and the shifting priorities of the stakeholders.3
+State Space
+At time step   , the state observation    is represented as a concatenated flat vector 3:
+  
+
+where    is the matrix of candidate theories,    is the current coordinate vector of the working draft, and    is the normalized stakeholder weight matrix at step   .3 In an environment where the number of static candidate theories   , the number of stakeholders   , and the dimensional footprint   , the state vector represents a   -dimensional real space (  ).3
+Action Space
+The action vector    represents the directional adjustments applied to each dimension of the working draft.3 To ensure smooth, incremental convergence and prevent disruptive structural shifts, the action space is constrained to tight operational bounds 3:
+  
+
+Transition Dynamics
+When the agent applies action   , the draft coordinates are updated and clipped to keep them within the standardized    manifold boundaries 3:
+  
+
+Simultaneously, the environment models non-stationary stakeholder behavior by simulating a random priority drift at each step.3 A Gaussian noise vector is added to the unnormalized stakeholder coordinates, which are then re-normalized to project them back onto the simplex 3:
+  
+
+  
+
+where the drift standard deviation is set to   .3
+Reward Function
+The reward signal evaluates the facilitation quality of the draft step, balancing consensus satisfaction, structural integration, tension minimization, and robustness 3:
+  
+
+*    is the minimax consensus quality (  ) computed by passing the static profiles plus the current working draft into lp_consensus.3
+*    is the mixture weight (  ) assigned to the working draft in the optimal consensus vector.3 A higher weight indicates that the draft has successfully synthesized and integrated the surrounding static theories.3 The scaling coefficient is set to   .3
+*    is the standard deviation of individual stakeholder scores at step   , scaled by    to penalize unequal compromises.3
+*    is the fragility of the working draft vector, scaled by    to encourage the agent to find robust coordinate layouts.3
+Baseline Performance Evaluations
+The performance of the reinforcement learning facilitator is benchmarked against two standard non-learning policy baselines: a Random Walk Agent and a Greedy Hill-Climbing Agent.3 The definitions of these baselines are structured as follows:
+   * Random Walk Agent: Samples continuous actions    uniformly and randomly from the hypercube    at each step.3
+   * Greedy Hill-Climbing Agent: Performs a local coordinate search by evaluating small positive and negative perturbations (   and   ) along each dimension of the current draft   .3 It computes the immediate reward for all    directions and executes the step yielding the highest instantaneous gain.3
+To validate the benefits of iterative optimization, the engine is tested over a 20-episode simulation (with   ,   ,   , and a horizon of    steps per episode).3 The empirical performance metrics of these baseline policies are detailed in the table below.
+Policy Baseline
+	Mean Reward
+	Mean Consensus Quality (Q)
+	Mean Draft Weight (wdraft​)
+	Mean Draft Fragility
+	Random Walk Agent
+	Low / Volatile
+	Unstable
+	Near-Zero
+	Variable
+	Greedy Hill-Climbing Agent
+	High / Stable
+	Maximized
+	High Integration
+	Minimized
+	The Greedy Hill-Climbing Agent consistently outperforms the Random Walk baseline, demonstrating that structured, gradient-like movements along the consensus manifold successfully navigate towards regions of lower tension and higher stakeholder satisfaction.3
+Proximal Policy Optimization Architecture
+To achieve optimal facilitation over extended horizons, a continuous Proximal Policy Optimization (PPO) agent is deployed.3 The model represents the policy (Actor) and value (Critic) networks using multi-layer perceptrons (MLP) sharing the following hyperparameters 3:
+
+
+Hyperparameter
+	Value
+	Description
+	Actor Hidden Layers
+	$$
+	Two fully connected layers with Tanh activations 3
+	Critic Hidden Layers
+	$$
+	Two fully connected layers with Tanh activations 3
+	Optimizer
+	Adam
+	Standard optimization with learning rate    3
+	Discount Factor (  )
+	  
+
+	Discounting factor for expected future returns 3
+	PPO Clipping Coefficient (  )
+	  
+
+	Constrains policy updates within    3
+	Entropy Coefficient (  )
+	  
+
+	Encourages action space exploration 3
+	Value Loss Coefficient (  )
+	  
+
+	Weights the Mean Squared Error of the Critic 3
+	Gradient Clipping Norm
+	  
+
+	Maximum allowable norm for network gradients 3
+	Rollout Buffer / Batch Size
+	  
+ /   
+	Sample sizes for PPO epoch updates 3
+	The Actor network outputs the mean action vector   , while a trainable log standard deviation parameter    represents the exploration variance.3 Together, they parameterize a continuous Gaussian policy distribution 3:
+  
+
+This framework allows the PPO agent to balance exploitation (optimizing consensus score    and reducing tension) with exploration (discovering robust, low-fragility regions of the manifold) during its 50,000 timestep training cycle.3
+Verification of System Correctness and the Validation Harness
+The test_epistem.py assertion suite performs ten rigorous sanity and mathematical safety checks (T1 through T10) to verify the correctness of the engine's primitives and identify numerical boundaries.3
+T1: Basic Sanity of embed
+The SVD projection is evaluated using a ten-text toy corpus containing short sentences describing three distinct domains: domestic animals, science, and economics.3 The routine requests an eight-dimensional embedding (  ).3 The validation harness asserts that:
+      * The returned dictionary contains exactly one profile per input document, excluding diagnostic metadata keys.3
+      * No zero-padding diagnostic indicators are triggered since the corpus size is larger than the requested dimensional depth (  ).3
+      * Every coordinate coordinate falls strictly within the theoretical boundaries   .3
+T1b & T1c: Profile Collisions and Semantic Warnings
+When processing short, generic sentences, the sparse TF-IDF matrix lacks sufficient distinct vocabulary signals to establish separate semantic trajectories during SVD.3 Under these conditions, different documents collapse onto the exact same coordinates, producing identical profiles.3 The validation suite verifies that a UserWarning containing the phrase "identical profiles" is emitted when duplicate profiles are generated, ensuring silent profile collapses are avoided.3 Real-world validation confirms that while synthetic text fragments collapse, longer and highly specific texts (30-50 words typical of pharmaceutical, environmental, or policy documentation) provide enough SVD signal to prevent collisions.3
+T2: Small-Corpus Zero-Padding and Bottleneck Misattribution
+An edge-case hazard occurs during SVD when the size of the document corpus is less than or equal to the requested coordinate dimensions (  ).3 In this regime, the SVD operator cannot extract    orthogonal components; the true rank of the projection matrix is bounded by   .3 The remaining    dimensions are padded with zeros before undergoing Min-Max scaling.3 Because the projection value for every document along these padded dimensions is identical (  ), the Min-Max scaler maps these padded dimensions to the absolute coordinate floor of    across all theories 3:
+  
+
+This uniform mapping creates a structural hazard known as bottleneck misattribution. Because the padded dimensions are locked at the minimum coordinate floor, any analytical diagnostic that queries the minimum coordinate of a profile (such as q_worst or argmin calculations used to identify bottleneck issues) will point directly to these artificial dimensions rather than the genuine semantic dimensions 3:
+  
+
+This means that downstream facilitation policies will misinterpret these padded dimensions as the primary points of consensus vulnerability. The validation harness passes a three-text corpus into an eight-dimensional embedding space, confirming that the diagnostic marker __padded_dims__ is successfully generated and downstream modules are insulated from these artificial floor coordinates.3
+T3: Input Validation for lp_consensus
+The system must refuse mismatched dimensional configurations.3 The harness asserts that a ValueError is raised when the number of stakeholder names in party_names does not match the row dimension of the weight matrix    (e.g., providing a two-row weight matrix but only one party name).3
+T4: Linear Programming Consensus Non-Degeneracy
+Using a conflict scenario with two divergent stakeholder weight profiles, the linear program is solved to locate the optimal compromise   .3 The assertion harness verifies that:
+         * The optimal vector    is not a trivial degenerate vector consisting entirely of    (or   ), proving that the optimization is bounded by the convex hull of the input profiles.3
+         * The minimax consensus score is strictly less than perfect satisfaction (  ), indicating that a realistic, non-trivial tradeoff has occurred.3
+         * The mixture weights    sum up to    within a float tolerance of   .3
+T5: Consensus Optimality Validation against Brute Force
+To verify the mathematical precision of the Maximin Linear Program, the optimal consensus score    obtained via the solver is compared against a brute-force stochastic search.3 The validation harness draws    random samples from a Dirichlet distribution over the theory mixture simplex   .3 It asserts that the linear programming solution is mathematically superior or equal to the best random sample 3:
+  
+
+while ensuring that the brute-force maximum remains within 1% of the exact LP boundary, confirming the overall correctness of the optimization landscape.3
+T6: Exactness of the    Worst-Case Calculator
+The analytical    minimum coordinate calculator q_worst is validated against a robust numerical optimization algorithm.3 The validation harness runs an SLSQP (Sequential Least Squares Programming) constrained minimization search over the weight simplex with    random restarts to locate the global minimum dot product 3:
+  
+
+The harness asserts that the exact analytical value returned by q_worst matches the numerical SLSQP output within a tight numerical tolerance 3:
+  
+
+This confirms that the analytical shortcut is mathematically correct and can be safely utilized to bypass iterative optimization in high-frequency reinforcement learning loops.3
+T7: Edge Cases and Boundary Robustness
+The harness evaluates the limits and degenerate sizes of datasets, verifying that:
+            * Passing a single candidate theory to lp_consensus does not crash the solver and correctly assigns    of the mixture weight (  ) to that sole theory.3
+            * Attempting to execute embed on a single-item corpus raises a ValueError rather than returning a degenerate single-point SVD projection, enforcing the rule that a consensus manifold requires at least two distinct coordinates to exist.3
+T8: Stress Testing and Fragility Internal Consistency
+The stress routine is evaluated using    Dirichlet scenarios under a fixed seed.3 The harness asserts that:
+               * The exact worst-case boundary is mathematically smaller than or equal to the empirical stochastic worst-case:
+  
+Because the analytical formulation represents the global minimum over the entire continuous simplex, no finite stochastic sample can yield a score lower than   .3
+               * The designated "most robust" theory (the one with the lowest coordinate range) yields a lower fragility score compared to the "most fragile" theory, verifying the internal consistency of the fragility metric.3
+T9: Performance Execution Timing Budgets
+To support real-time facilitation in interactive systems, all core routines must operate within strict timing constraints.3 The timing harness measures the execution speed of embed, lp_consensus, and stress (over 1,000 scenarios) using high-resolution performance counters.3 It asserts that the entire integrated pipeline executes in under    second, with typical runs completing in a few milliseconds, enabling online facilitation inside continuous reinforcement learning environments.3
+T10: Isomorphism Sanity Checking
+The isomorphism primitive is subjected to validation using controlled test vectors.3 The harness asserts that:
+                  * Evaluating the isomorphism of any vector against itself yields a perfect correlation coefficient 3:
+  
+                  * Evaluating a vector against its logical complement (  ) returns a perfect inverse correlation 3:
+  
+These validation results are summarized in the table below, linking each test identifier to its corresponding mathematical property and software verification target.
+
+
+Test ID
+	System Target
+	Verified Mathematical / Algorithmic Property
+	Expected Validation Outcome
+	T1
+	embed Sanity
+	Range mapping and boundary constraints on   
+	PASS 3
+	T1b/c
+	SVD Collisions
+	Detection of identical profiles under TF-IDF matrix rank reduction
+	PASS 3
+	T2
+	Padding Bug
+	__padded_dims__ diagnostic flags preventing misattribution of floor values
+	PASS 3
+	T3
+	Input Validation
+	Mismatched shape enforcement:   
+	PASS 3
+	T4
+	LP Non-Degeneracy
+	Optimal vector    is constrained strictly within the convex hull
+	PASS 3
+	T5
+	LP Optimality
+	Minimax satisfaction verification (  )
+	PASS 3
+	T6
+	q_worst Exactness
+	Analytical equivalence to SLSQP minimization ($
+	q_{\text{worst}} - q_{\text{SLSQP}}
+	T7
+	Boundary Sizes
+	Single-theory passthrough and single-text error enforcement
+	PASS 3
+	T8
+	Stress Consistency
+	Lower-bound dominance:   
+	PASS 3
+	T9
+	Execution Budget
+	Real-time performance guarantee:    (empirical    ms)
+	PASS 3
+	T10
+	Isomorphism
+	Symmetry and inversion checks:    and   
+	PASS 3
+	Through this comprehensive mathematical harness, the engine ensures that its optimization, facilitation, and diagnostic modules remain mathematically consistent, enabling organizations to deploy these algorithms to govern complex, shifting multi-party negotiations.3
+Sources des citations
+                     1. Amorphous Intelligence in Hybrid Cloud-Edge Systems: Distributed AI Cognition Without Epistemic Authority - TechRxiv, consulté le juillet 9, 2026, https://www.techrxiv.org/doi/pdf/10.36227/techrxiv.176834666.66906312
+                     2. The Social Structure of Scientific Evaluation: AI, Benchmarking, and the Deep Learning Monoculture - OSF, consulté le juillet 9, 2026, https://osf.io/download/s4qdy/
+                     3. epistem.py
+                     4. Distributed Science - The Scientific Process as Multi-Scale Active Inference - ResearchGate, consulté le juillet 9, 2026, https://www.researchgate.net/publication/374782654_Distributed_Science_-_The_Scientific_Process_as_Multi-Scale_Active_Inference
+                     5. Epistemic Agency in the Age of Large Language Models: Design Principles for Knowledge-Building AI - MDPI, consulté le juillet 9, 2026, https://www.mdpi.com/2673-2688/7/3/99
+                     6. (PDF) Active inference and epistemic value - ResearchGate, consulté le juillet 9, 2026, https://www.researchgate.net/publication/272520403_Active_inference_and_epistemic_value
